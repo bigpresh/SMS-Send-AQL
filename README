@@ -1,46 +1,50 @@
-SMS::Send::AQL  README
-===========================
+NAME
+    SMS::Send::AQL - SMS::Send driver to send messages via AQL (www.aql.com)
 
-An SMS::Send driver to send messages via AQL (www.aql.com).
+SYNOPSIS
+      use SMS::Send;
+  
+      # Create a sender
+      my $sender = SMS::Send->new('AQL',
+            _login    => 'your_aql_username',
+            _password => 'your_aql_password',
+            _sender   => 'sender number',
+      );
+  
+      # Send a message
+      my $sent = $sender->send_sms(
+            text => 'This is a test message',
+            to   => '+61 (4) 1234 5678',
+      );
+  
+      if ( $sent ) {
+            print "Message sent ok\n";
+      } else {
+            print "Failed to send message\n";
+      }
 
-INSTALLATION
+DESCRIPTION
+    A driver for SMS::Send to send SMS text messages via AQL (www.aql.com)
 
-To install this module type the following:
+    This is not intended to be used directly, but instead called by
+    SMS::Send (see synopsis above for a basic illustration, and see
+    SMS::Send's documentation for further information).
 
-   perl Makefile.PL
-   make
-   make test
-   make install
+METHODS
+    new Constructor, takes argument pairs passed by SMS::Send, returns an
+        SMS::Send::AQL object. See usage synopsis for example, and see
+        SMS::Send documentation for further info on using SMS::Send drivers.
 
-DEPENDENCIES
+    send_sms
+        Send the message - see SMS::Send for details.
 
-This module requires these other modules and libraries:
+AUTHOR
+    David Precious, <davidp@preshweb.co.uk>
 
-  SMS::AQL
+COPYRIGHT AND LICENSE
+    Copyright (C) 2008-2011 by David Precious
 
+    This library is free software; you can redistribute it and/or modify it
+    under the same terms as Perl itself, either Perl version 5.8.7 or, at
+    your option, any later version of Perl 5 you may have available.
 
-USAGE
-
-Please see the documentation for SMS::Send for details on how to use SMS::Send
-to send messages using an SMS::Send driver such as this one.
-
-When creating an instance of SMS::Send, you must supply your AQL account
-username and password, in the parameters _username and _password (alternatively,
-_login can be used in place of _username, for consistency with the example
-provided by SMS::Send).
-
-There is a simple example usage script distributed with SMS::Send::AQL which
-you will find in eg/simple-example.pl.
-
-
-
-COPYRIGHT AND LICENCE
-
-Copyright (C) 2008 by David Precious
-
-This library is free software; you can redistribute it and/or modify
-it under the same terms as Perl itself, either Perl version 5.8.0 or,
-at your option, any later version of Perl 5 you may have available.
-
-
-$Id: README 213 2008-01-19 15:32:33Z davidp $
