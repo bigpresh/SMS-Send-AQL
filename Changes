@@ -1,5 +1,8 @@
 Revision history for Perl extension SMS::Send::AQL.
 
+0.04  2011-02-11
+    - Document _login as correct way to supply username
+
 0.03  2008-03-09
     - Kwalitee-boosting (include META.yml with valid licence)
     
