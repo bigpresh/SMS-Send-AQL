@@ -5,7 +5,7 @@ package SMS::Send::AQL;
 use strict;
 use warnings;
 use SMS::AQL;
-our $VERSION = '0.03';
+our $VERSION = '0.04';
 use base 'SMS::Send::Driver';
 
 
@@ -21,16 +21,16 @@ SMS::Send::AQL - SMS::Send driver to send messages via AQL (www.aql.com)
   
   # Create a sender
   my $sender = SMS::Send->new('AQL',
-        _username => 'your_aql_username',
+        _login    => 'your_aql_username',
         _password => 'your_aql_password',
         _sender   => 'sender number',
-        );
+  );
   
   # Send a message
   my $sent = $sender->send_sms(
         text => 'This is a test message',
         to   => '+61 (4) 1234 5678',
-        );
+  );
   
   if ( $sent ) {
         print "Message sent ok\n";
@@ -67,21 +67,22 @@ sub new {
 
     my $self = bless { %args }, $class;
     
-    # we accept _login for compatibility with the example shown in SMS::Send
-    # documentation (principle of least surprise, if people expect that to
-    # work, we may as well make it work :) )
-    if (exists $args{_login} && ! exists $args{_username}) {
-        $args{_username} = $args{_login};
+    # Previous versions of this module documented _username as the param name
+    # for the username; unfortunately there's no "standard" for SMS::Send
+    # drivers, but the general concensus seems to be to use _login, but we'll
+    # continue to support _username too.
+    if (!exists $args{_login} && exists $args{_username}) {
+        $args{_login} = delete $args{_username};
     }
     
-    if (grep { ! $args{$_} } qw(_username _password)) {
-        die "_username (or _login) and _password required";
+    if (grep { ! $args{$_} } qw(_login _password)) {
+        die "_login (or _username) and _password required";
     }
     
     
     
     $self->{aql} = new SMS::AQL({
-        username => $args{_username},
+        username => $args{_login},
         password => $args{_password},
         options => {
             sender => $args{_sender} || 'SMS::AQL',
@@ -124,7 +125,7 @@ David Precious, E<lt>davidp@preshweb.co.ukE<gt>
 
 =head1 COPYRIGHT AND LICENSE
 
-Copyright (C) 2008 by David Precious
+Copyright (C) 2008-2011  by David Precious
 
 This library is free software; you can redistribute it and/or modify
 it under the same terms as Perl itself, either Perl version 5.8.7 or,
